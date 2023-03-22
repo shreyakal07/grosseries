@@ -39,12 +39,16 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
                   Navigator.pop(context);
                   GoRouter.of(context).go("/add_item");
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Row(children: const [
-                  Icon(
-                    Icons.search,
-                  ),
-                  Text("Browse common ingredients & search bar")
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.only(left: 5)),
+                child: Row(children: [
+                  Container(
+                      margin: const EdgeInsets.only(right: 5),
+                      child: const Icon(
+                        Icons.search,
+                      )),
+                  const Text("Browse & search common ingredients")
                 ]))),
         Container(
             margin: const EdgeInsets.only(top: 10.0),
@@ -53,11 +57,15 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
                   Navigator.pop(context);
                   GoRouter.of(context).go("/bulk_add");
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Row(children: const [
-                  Icon(
-                    Icons.photo_camera,
-                  ),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.only(left: 5)),
+                child: Row(children: [
+                  Container(
+                      margin: const EdgeInsets.only(right: 5),
+                      child: const Icon(
+                        Icons.photo_camera,
+                      )),
                   Text("Bulk add with a photo")
                 ]))),
       ],
