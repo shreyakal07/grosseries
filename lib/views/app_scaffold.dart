@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grosseries/components/add_bottom_sheet.dart';
 
 class AppScaffold extends StatefulWidget {
   const AppScaffold({Key? key, required this.child}) : super(key: key);
@@ -19,7 +20,17 @@ class _AppScaffoldState extends State<AppScaffold> {
       if (_selectedIndex == 0) {
         GoRouter.of(context).go("/");
       } else if (_selectedIndex == 1) {
-        GoRouter.of(context).go("/add_item");
+        // GoRouter.of(context).go("/add_item");
+        showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Container(
+                height: 200,
+                decoration: BoxDecoration(color: Colors.yellow[100]),
+                padding: const EdgeInsets.only(top: 16, left: 32, right: 32),
+                child: const AddBottomSheet(),
+              );
+            });
       } else if (_selectedIndex == 2) {
         // GoRouter.of(context).go("/login");
         GoRouter.of(context).go("/profile");
