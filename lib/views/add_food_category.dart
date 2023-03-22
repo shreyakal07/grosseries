@@ -20,6 +20,7 @@ class _AddFoodCategoryViewState extends State<AddFoodCategoryView> {
   FoodCategory? _selectedCategory;
 
   List<FoodItem>? _filteredList;
+  String? value;
 
   void _onCardTapped(FoodCategory category) {
     setState(() {
@@ -130,6 +131,7 @@ class _AddFoodCategoryViewState extends State<AddFoodCategoryView> {
                     onFieldSubmitted: (String value) {
                       onFieldSubmitted();
                       debugPrint("You just typed a new entry $value");
+                      value = value;
                     },
                     cursorColor: Colors.grey,
                     decoration: InputDecoration(
@@ -145,13 +147,24 @@ class _AddFoodCategoryViewState extends State<AddFoodCategoryView> {
                         fontSize: 18,
                       ),
                       prefixIcon: Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(12),
                         width: 16,
                         child: Icon(
                           Icons.search,
                           color: Colors.yellow[800],
                         ),
                       ),
+                      suffixIcon: Visibility(
+                          visible: value!.isNotEmpty ? true : false,
+                          child: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () => {
+                              textEditingController.clear(),
+                              setState(() {
+                                value = "";
+                              }),
+                            },
+                          )),
                     ),
                   );
                 }),
