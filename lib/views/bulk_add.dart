@@ -42,7 +42,9 @@ class _BulkAddState extends State<BulkAdd> {
             Container(
                 margin: const EdgeInsets.all(15),
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GoRouter.of(context).go('/take_picture_screen');
+                    },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),
                     child: const Text(

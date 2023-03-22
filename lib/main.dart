@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:grosseries/view_models/food_category_view_model.dart';
 import 'package:grosseries/view_models/food_list_entry_view_model.dart';
@@ -12,6 +13,7 @@ import 'package:grosseries/views/food_list_view.dart';
 import 'package:grosseries/views/settings/edit_profile.dart';
 import 'package:grosseries/views/settings/edit_profile_more.dart';
 import 'package:grosseries/views/settings/manage_reminders.dart';
+import 'package:grosseries/views/take_picture_screen.dart';
 import 'package:grosseries/views/user_auth/login.dart';
 import 'package:grosseries/views/item_details_view.dart';
 import 'package:grosseries/views/user_auth/create_account.dart';
@@ -20,7 +22,7 @@ import 'package:grosseries/views/user_auth/welcome.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   AwesomeNotifications().initialize(
     "resource://drawable/res_app_icon",
     [
@@ -42,6 +44,11 @@ void main() {
     ],
     debug: true,
   );
+
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<FoodListEntryViewModel>(
@@ -57,12 +64,14 @@ void main() {
         create: (_) => UserViewModel(),
       ),
     ],
-    child: MyApp(),
+    child: MyApp(camera: firstCamera),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  MyApp({super.key, required this.camera});
+
+  final CameraDescription camera;
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +146,11 @@ class MyApp extends StatelessWidget {
                 path: '/bulk_add',
                 builder: (BuildContext context, GoRouterState state) {
                   return const BulkAdd();
+                }),
+            GoRoute(
+                path: '/take_picture_screen',
+                builder: (BuildContext context, GoRouterState state) {
+                  return TakePictureScreen(camera: camera);
                 })
           ]),
       GoRoute(
