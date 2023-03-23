@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library will be used to bulk add food using images.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The camera will be used to capture images of food and bulk add them.</string>
 </dict>
 </plist>

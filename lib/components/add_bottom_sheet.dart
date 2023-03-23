@@ -31,34 +31,44 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
           height: 28,
         ),
         const Text("Add to List",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         Container(
-            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+            margin: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                   GoRouter.of(context).go("/add_item");
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Row(children: const [
-                  Icon(
-                    Icons.search,
-                  ),
-                  Text("Browse common ingredients & search bar")
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.only(left: 5)),
+                child: Row(children: [
+                  Container(
+                      margin: const EdgeInsets.only(right: 5),
+                      child: const Icon(
+                        Icons.search,
+                      )),
+                  const Text("Browse & search common ingredients",
+                      style: TextStyle(fontSize: 18))
                 ]))),
         Container(
-            margin: const EdgeInsets.only(top: 10.0),
+            margin: const EdgeInsets.only(top: 10.0, bottom: 20),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                   GoRouter.of(context).go("/bulk_add");
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Row(children: const [
-                  Icon(
-                    Icons.photo_camera,
-                  ),
-                  Text("Bulk add with a photo")
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.only(left: 5)),
+                child: Row(children: [
+                  Container(
+                      margin: const EdgeInsets.only(right: 5),
+                      child: const Icon(
+                        Icons.photo_camera,
+                      )),
+                  const Text("Bulk add with a photo",
+                      style: TextStyle(fontSize: 18))
                 ]))),
       ],
     ));

@@ -198,22 +198,24 @@ class _FoodListViewState extends State<FoodListView> {
                           fontSize: 18,
                         ),
                         prefixIcon: Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(12),
                           width: 16,
                           child: Icon(
                             Icons.search,
                             color: Colors.yellow[800],
                           ),
                         ),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () => {
-                            textEditingController.clear(),
-                            setState(() {
-                              query = "";
-                            }),
-                          },
-                        )),
+                        suffixIcon: Visibility(
+                            visible: query.isNotEmpty ? true : false,
+                            child: IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () => {
+                                textEditingController.clear(),
+                                setState(() {
+                                  query = "";
+                                }),
+                              },
+                            ))),
                   )),
               Expanded(
                 child: AnimatedList(

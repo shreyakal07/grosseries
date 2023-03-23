@@ -42,6 +42,7 @@ void main() {
     ],
     debug: true,
   );
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<FoodListEntryViewModel>(
@@ -137,7 +138,7 @@ class MyApp extends StatelessWidget {
                 path: '/bulk_add',
                 builder: (BuildContext context, GoRouterState state) {
                   return const BulkAdd();
-                })
+                }),
           ]),
       GoRoute(
         path: '/welcome',
