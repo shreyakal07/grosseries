@@ -46,11 +46,6 @@ class _BulkAddState extends State<BulkAdd> {
           backgroundColor: Colors.yellow[200],
           elevation: 1,
           centerTitle: false,
-          // leading: IconButton(
-          //     icon: const Icon(Icons.chevron_left, color: Colors.black),
-          //     onPressed: (() {
-          //       GoRouter.of(context).go('/');
-          //     })),
           title: const Center(child: Text('Bulk Add To List')),
         ),
         body: Column(

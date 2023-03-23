@@ -14,8 +14,7 @@ class AddBottomSheet extends StatefulWidget {
 class _AddBottomSheetState extends State<AddBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
+    return Column(
       children: [
         Center(
           child: Container(
@@ -48,8 +47,12 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
                       child: const Icon(
                         Icons.search,
                       )),
-                  const Text("Browse & search common ingredients",
-                      style: TextStyle(fontSize: 18))
+                  Flexible(
+                      child: Container(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: const Text(
+                              "Browse & search common ingredients",
+                              style: TextStyle(fontSize: 18))))
                 ]))),
         Container(
             margin: const EdgeInsets.only(top: 10.0, bottom: 20),
@@ -67,10 +70,13 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
                       child: const Icon(
                         Icons.photo_camera,
                       )),
-                  const Text("Bulk add with a photo",
-                      style: TextStyle(fontSize: 18))
+                  Flexible(
+                      child: Container(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: const Text("Bulk add with a photo",
+                              style: TextStyle(fontSize: 18))))
                 ]))),
       ],
-    ));
+    );
   }
 }
