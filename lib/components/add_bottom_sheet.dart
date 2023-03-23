@@ -31,9 +31,9 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
           height: 28,
         ),
         const Text("Add to List",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         Container(
-            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+            margin: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -48,10 +48,11 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
                       child: const Icon(
                         Icons.search,
                       )),
-                  const Text("Browse & search common ingredients")
+                  const Text("Browse & search common ingredients",
+                      style: TextStyle(fontSize: 18))
                 ]))),
         Container(
-            margin: const EdgeInsets.only(top: 10.0),
+            margin: const EdgeInsets.only(top: 10.0, bottom: 20),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -66,7 +67,8 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
                       child: const Icon(
                         Icons.photo_camera,
                       )),
-                  Text("Bulk add with a photo")
+                  const Text("Bulk add with a photo",
+                      style: TextStyle(fontSize: 18))
                 ]))),
       ],
     ));

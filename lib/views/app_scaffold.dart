@@ -25,7 +25,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             context: context,
             builder: (context) {
               return Container(
-                height: 200,
+                height: 300,
                 decoration: BoxDecoration(color: Colors.yellow[100]),
                 padding: const EdgeInsets.only(top: 16, left: 32, right: 32),
                 child: const AddBottomSheet(),

@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'dart:io';
 
-import '../components/add_bottom_sheet.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class BulkAdd extends StatefulWidget {
   const BulkAdd({super.key});
@@ -12,6 +13,31 @@ class BulkAdd extends StatefulWidget {
 }
 
 class _BulkAddState extends State<BulkAdd> {
+  File? image;
+  final _picker = ImagePicker();
+
+  Future pickImage() async {
+    try {
+      final image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      // print('Failed to pick image: $e');
+    }
+  }
+
+  Future pickImageCamera() async {
+    try {
+      final image = await _picker.pickImage(source: ImageSource.camera);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      // print('Failed to pick image: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +69,7 @@ class _BulkAddState extends State<BulkAdd> {
                 margin: const EdgeInsets.all(15),
                 child: ElevatedButton(
                     onPressed: () {
-                      GoRouter.of(context).go('/take_picture_screen');
+                      pickImageCamera();
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),
@@ -54,11 +80,14 @@ class _BulkAddState extends State<BulkAdd> {
             Container(
                 margin: const EdgeInsets.all(15),
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      pickImage();
+                    },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),
                     child: const Text("Upload from Gallery",
-                        style: TextStyle(fontSize: 20))))
+                        style: TextStyle(fontSize: 20)))),
+            image != null ? Image.file(image!) : Text("no image")
           ],
         ));
   }
