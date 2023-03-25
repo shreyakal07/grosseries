@@ -141,9 +141,11 @@ class MyApp extends StatelessWidget {
                   return const BulkAdd();
                 }),
             GoRoute(
-                path: '/bulk_add_results/:imageBytes',
+                path: '/bulk_add_results',
+                name: 'bulk_add_results',
                 builder: (context, state) {
-                  return const BulkAddResults();
+                  String file = state.extra as String;
+                  return BulkAddResults(imageBytes: file);
                 }),
           ]),
       GoRoute(

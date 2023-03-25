@@ -80,8 +80,9 @@ class _BulkAddState extends State<BulkAdd> {
                       pickImage();
                       if (image != null) {
                         List<int> imageBytes = image!.readAsBytesSync();
-                        GoRouter.of(context).go(
-                            "/bulk_add_results/${base64Encode(imageBytes)}");
+                        // GoRouter.of(context).go(
+                        //     "/bulk_add_results/${base64Encode(imageBytes)}");
+                        context.goNamed("bulk_add_results", extra: imageBytes);
                       }
                     },
                     style: ElevatedButton.styleFrom(
