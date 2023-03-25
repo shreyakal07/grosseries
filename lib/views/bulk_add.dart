@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'bulk_add_results.dart';
+
 class BulkAdd extends StatefulWidget {
   const BulkAdd({super.key});
 
@@ -82,7 +84,11 @@ class _BulkAddState extends State<BulkAdd> {
                         List<int> imageBytes = image!.readAsBytesSync();
                         // GoRouter.of(context).go(
                         //     "/bulk_add_results/${base64Encode(imageBytes)}");
-                        context.goNamed("bulk_add_results", extra: imageBytes);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BulkAddResults(
+                                    imageBytes: base64Encode(imageBytes))));
                       }
                     },
                     style: ElevatedButton.styleFrom(
