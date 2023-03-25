@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -77,12 +78,17 @@ class _BulkAddState extends State<BulkAdd> {
                 child: ElevatedButton(
                     onPressed: () {
                       pickImage();
+                      if (image != null) {
+                        List<int> imageBytes = image!.readAsBytesSync();
+                        GoRouter.of(context).go(
+                            "/bulk_add_results/${base64Encode(imageBytes)}");
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),
                     child: const Text("Upload from Gallery",
                         style: TextStyle(fontSize: 20)))),
-            image != null ? Image.file(image!) : Text("no image")
+            // image != null ? Image.file(image!) : const Text("no image")
           ],
         ));
   }

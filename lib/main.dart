@@ -8,6 +8,7 @@ import 'package:grosseries/views/add_food_category.dart';
 import 'package:grosseries/views/add_food_item_detail.dart';
 import 'package:grosseries/views/app_scaffold.dart';
 import 'package:grosseries/views/bulk_add.dart';
+import 'package:grosseries/views/bulk_add_results.dart';
 import 'package:grosseries/views/food_list_view.dart';
 import 'package:grosseries/views/settings/edit_profile.dart';
 import 'package:grosseries/views/settings/edit_profile_more.dart';
@@ -138,6 +139,11 @@ class MyApp extends StatelessWidget {
                 path: '/bulk_add',
                 builder: (BuildContext context, GoRouterState state) {
                   return const BulkAdd();
+                }),
+            GoRoute(
+                path: '/bulk_add_results/:imageBytes',
+                builder: (context, state) {
+                  return const BulkAddResults();
                 }),
           ]),
       GoRoute(
