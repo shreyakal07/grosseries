@@ -16,24 +16,24 @@ class Predictions {
 }
 
 class Response {
-  final Predictions displayNames;
+  final List displayNames;
 
   Response({required this.displayNames});
 
   factory Response.fromJson(Map<String, dynamic> json) {
-    Predictions.fromJson(json['predictions']);
-    return Response(displayNames: Predictions.fromJson(json['predictions']));
+    // Predictions.fromJson(json['predictions']);
+    // return Response(displayNames: Predictions.fromJson(json['predictions']));
 
-    // return Response(
-    //     displayNames: json['predictions'][0]['displayNames'] as List);
+    return Response(
+        displayNames: json['predictions'][0]['displayNames'] as List);
   }
 
   @override
   String toString() {
     // TODO: implement toString
     String str = "";
-    for (var i = 0; i < displayNames.displayNames.length; i++) {
-      str += displayNames.displayNames[i] + ", ";
+    for (var i = 0; i < displayNames.length; i++) {
+      str += displayNames[i] + ", ";
     }
     return str;
   }
