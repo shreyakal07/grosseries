@@ -24,7 +24,15 @@ class _BulkAddState extends State<BulkAdd> {
       final image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      if (mounted) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BulkAddResults(
+                    imageBytes: base64Encode(imageTemp.readAsBytesSync()))));
+      }
+
+      // setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
       // print('Failed to pick image: $e');
     }
@@ -35,7 +43,14 @@ class _BulkAddState extends State<BulkAdd> {
       final image = await _picker.pickImage(source: ImageSource.camera);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      if (mounted) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BulkAddResults(
+                    imageBytes: base64Encode(imageTemp.readAsBytesSync()))));
+      }
+      // setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
       // print('Failed to pick image: $e');
     }
@@ -68,16 +83,14 @@ class _BulkAddState extends State<BulkAdd> {
                 child: ElevatedButton(
                     onPressed: () {
                       pickImageCamera();
-                      if (image != null) {
-                        List<int> imageBytes = image!.readAsBytesSync();
-                        // GoRouter.of(context).go(
-                        //     "/bulk_add_results/${base64Encode(imageBytes)}");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BulkAddResults(
-                                    imageBytes: base64Encode(imageBytes))));
-                      }
+                      // if (image != null) {
+                      // List<int> imageBytes = image!.readAsBytesSync();
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => BulkAddResults(
+                      //             imageBytes: base64Encode(imageBytes))));
+                      // }
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),
@@ -90,16 +103,14 @@ class _BulkAddState extends State<BulkAdd> {
                 child: ElevatedButton(
                     onPressed: () {
                       pickImage();
-                      if (image != null) {
-                        List<int> imageBytes = image!.readAsBytesSync();
-                        // GoRouter.of(context).go(
-                        //     "/bulk_add_results/${base64Encode(imageBytes)}");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BulkAddResults(
-                                    imageBytes: base64Encode(imageBytes))));
-                      }
+                      // if (image != null) {
+                      //   List<int> imageBytes = image!.readAsBytesSync();
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => BulkAddResults(
+                      //               imageBytes: base64Encode(imageBytes))));
+                      // }
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),

@@ -59,7 +59,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
     if (response.statusCode == 200) {
       return Response.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to create album.');
+      throw Exception('Failed to identify image.');
     }
   }
 
