@@ -68,6 +68,16 @@ class _BulkAddState extends State<BulkAdd> {
                 child: ElevatedButton(
                     onPressed: () {
                       pickImageCamera();
+                      if (image != null) {
+                        List<int> imageBytes = image!.readAsBytesSync();
+                        // GoRouter.of(context).go(
+                        //     "/bulk_add_results/${base64Encode(imageBytes)}");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BulkAddResults(
+                                    imageBytes: base64Encode(imageBytes))));
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),

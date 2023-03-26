@@ -5,22 +5,22 @@ import 'package:http/http.dart' as http;
 
 // See https://docs.flutter.dev/cookbook/networking/fetch-data
 
-class Album {
-  final int userId;
-  final int id;
-  final String title;
+class Response {
+  final String contentType;
+  final String data;
+  var extensions;
 
-  const Album({
-    required this.userId,
-    required this.id,
-    required this.title,
+  Response({
+    required this.contentType,
+    required this.data,
+    this.extensions,
   });
 
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
+  factory Response.fromJson(Map<String, dynamic> json) {
+    return Response(
+      contentType: json['contentType'],
+      data: json['data'],
+      extensions: json['extensions'],
     );
   }
 }
@@ -35,9 +35,11 @@ class BulkAddResults extends StatefulWidget {
 }
 
 class _BulkAddResultsState extends State<BulkAddResults> {
-  late Future<Album> futureAlbum;
+  late Future<Response> futureAlbum;
+  late var test;
 
-  Future<Album> createAlbum() async {
+  Future<Response> createAlbum() async {
+    print("ENTERED");
     Map json = {
       "instances": [
         {"content": widget.imageBytes}
@@ -50,20 +52,24 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           'https://us-central1-aiplatform.googleapis.com/v1/projects/361247076963/locations/us-central1/endpoints/333490672797483008:predict'),
       headers: <String, String>{
         "Authorization":
-            'Bearer ya29.a0Ael9sCMcOWJySPEq10pEZJAlTmtiYVjs2Lkkk6rjEzzi-G37sAHfyMkcuX4n3NVwZ2jvx7uEwjjeQ_OqbWCmdU7CB27Jpje-fep8KnzyyHqxTOMie-l-kf21fM-19MrATjAUs1-xi1t64nT7SVl3gLLCfdl5_0_Clp1Ky9YkQwZsts0kBA_0MCAsEma0kHZuFvMGd8u7prSARJ3d9Csevm572Q3VpMJmMlCbKQaCgYKAbYSARASFQF4udJhyUsqYDaLooSadl4uaJc1Cw0237',
+            'Bearer ya29.a0Ael9sCP5jZXjWBaI-PpI22fhHXb4fkA7PSuZhLdPKWDhfwm68FFM8AN0JgPSBLCizpOd2Uo70cvAGT9V6mehWwfFIrQBLFYgGv2x3T23zn_Nh981q9OVMtYGornTBPe7L8JQV9g_v3fWtLt_Jtf2yF3_o12Ve6_8yxmBo0Ff9zvcWpmpcT7KUfB_rUTsKRu0VuHy4k_T_6pMFL5o8dIGoGcfOVctg-NHIpp3DQsaCgYKAR8SARASFQF4udJh58WYW7i9v2Rk3T63XCEAig0238',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(json),
     );
 
+    print("HELLOHERE" + response.statusCode.toString());
+
     if (response.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
-      print(response.body);
-      return Album.fromJson(jsonDecode(response.body));
+      // print(response.body);
+      return Response.fromJson(jsonDecode(response.body));
+      // return jsonDecode(response.body);
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
+      print("ERROR");
       throw Exception('Failed to create album.');
     }
   }
@@ -71,7 +77,8 @@ class _BulkAddResultsState extends State<BulkAddResults> {
   @override
   void initState() {
     super.initState();
-    futureAlbum = createAlbum();
+    // futureAlbum = createAlbum();
+    test = createAlbum();
   }
 
   @override
@@ -84,7 +91,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           centerTitle: false,
           title: const Center(child: Text('Bulk Add To List')),
         ),
-        body: const Text("Placeholder so this works")
+        body: Text("JSON Response: " + test.contentType)
         // Center(
         //   child: FutureBuilder<Album>(
         //     future: futureAlbum,
