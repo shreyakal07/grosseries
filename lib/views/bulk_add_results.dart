@@ -5,21 +5,35 @@ import 'package:http/http.dart' as http;
 
 // See https://docs.flutter.dev/cookbook/networking/fetch-data
 
+class Predictions {
+  final List<String> displayNames;
+
+  Predictions({required this.displayNames});
+
+  factory Predictions.fromJson(Map<String, dynamic> json) {
+    return Predictions(displayNames: json['displayNames']);
+  }
+}
+
 class Response {
-  final List displayNames;
+  final Predictions displayNames;
 
   Response({required this.displayNames});
 
   factory Response.fromJson(Map<String, dynamic> json) {
-    return Response(displayNames: json['predictions'][0]['displayName']);
+    Predictions.fromJson(json['predictions']);
+    return Response(displayNames: Predictions.fromJson(json['predictions']));
+
+    // return Response(
+    //     displayNames: json['predictions'][0]['displayNames'] as List);
   }
 
   @override
   String toString() {
     // TODO: implement toString
     String str = "";
-    for (var i = 0; i < displayNames.length; i++) {
-      str += displayNames[i] + ", ";
+    for (var i = 0; i < displayNames.displayNames.length; i++) {
+      str += displayNames.displayNames[i] + ", ";
     }
     return str;
   }
@@ -68,7 +82,10 @@ class _BulkAddResultsState extends State<BulkAddResults> {
         print("THIS IS NULL");
       } else {
         print(j.toString());
+        print(j['predictions'][0]['displayNames']);
+        print(j['predictions'][0]['displayNames'].runtimeType);
       }
+
       return Response.fromJson(jsonDecode(response.body));
       // return jsonDecode(response.body);
     } else {
