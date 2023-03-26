@@ -60,10 +60,16 @@ class _BulkAddResultsState extends State<BulkAddResults> {
 
     print("HELLOHERE" + response.statusCode.toString());
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       // print(response.body);
+      var j = jsonDecode(response.body);
+      if (j == null) {
+        print("THIS IS NULL");
+      } else {
+        print(j.toString());
+      }
       return Response.fromJson(jsonDecode(response.body));
       // return jsonDecode(response.body);
     } else {
