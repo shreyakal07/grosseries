@@ -5,32 +5,18 @@ import 'package:http/http.dart' as http;
 
 // See https://docs.flutter.dev/cookbook/networking/fetch-data
 
-class Predictions {
-  final List<String> displayNames;
-
-  Predictions({required this.displayNames});
-
-  factory Predictions.fromJson(Map<String, dynamic> json) {
-    return Predictions(displayNames: json['displayNames']);
-  }
-}
-
 class Response {
   final List displayNames;
 
   Response({required this.displayNames});
 
   factory Response.fromJson(Map<String, dynamic> json) {
-    // Predictions.fromJson(json['predictions']);
-    // return Response(displayNames: Predictions.fromJson(json['predictions']));
-
     return Response(
         displayNames: json['predictions'][0]['displayNames'] as List);
   }
 
   @override
   String toString() {
-    // TODO: implement toString
     String str = "";
     for (var i = 0; i < displayNames.length; i++) {
       str += displayNames[i] + ", ";
@@ -52,7 +38,6 @@ class _BulkAddResultsState extends State<BulkAddResults> {
   late Future<Response>? futureResponse;
 
   Future<Response> getLabel() async {
-    print("ENTERED");
     Map json = {
       "instances": [
         {"content": widget.imageBytes}
@@ -71,27 +56,9 @@ class _BulkAddResultsState extends State<BulkAddResults> {
       body: jsonEncode(json),
     );
 
-    print("HELLOHERE" + response.statusCode.toString());
-
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // print(response.body);
-      var j = jsonDecode(response.body);
-      if (j == null) {
-        print("THIS IS NULL");
-      } else {
-        print(j.toString());
-        print(j['predictions'][0]['displayNames']);
-        print(j['predictions'][0]['displayNames'].runtimeType);
-      }
-
       return Response.fromJson(jsonDecode(response.body));
-      // return jsonDecode(response.body);
     } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
-      print("ERROR");
       throw Exception('Failed to create album.');
     }
   }
@@ -112,9 +79,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
         centerTitle: false,
         title: const Center(child: Text('Bulk Add To List')),
       ),
-      body:
-          // Text("Label: " + futureResponse.toString())
-          Container(
+      body: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(8.0),
         child: (futureResponse == null) ? null : buildFutureBuilder(),
