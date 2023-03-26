@@ -49,7 +49,7 @@ class BulkAddResults extends StatefulWidget {
 }
 
 class _BulkAddResultsState extends State<BulkAddResults> {
-  late Future<Response> futureResponse;
+  late Future<Response>? futureResponse;
 
   Future<Response> getLabel() async {
     print("ENTERED");
@@ -99,36 +99,41 @@ class _BulkAddResultsState extends State<BulkAddResults> {
   @override
   void initState() {
     super.initState();
-    // futureAlbum = createAlbum();
     futureResponse = getLabel();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.yellow[200],
+      appBar: AppBar(
         backgroundColor: Colors.yellow[200],
-        appBar: AppBar(
-          backgroundColor: Colors.yellow[200],
-          elevation: 1,
-          centerTitle: false,
-          title: const Center(child: Text('Bulk Add To List')),
-        ),
-        body: Text("Label: " + futureResponse.toString())
-        // Center(
-        //   child: FutureBuilder<Album>(
-        //     future: futureAlbum,
-        //     builder: (context, snapshot) {
-        //       if (snapshot.hasData) {
-        //         return Text(snapshot.data!.title);
-        //       } else if (snapshot.hasError) {
-        //         return Text('${snapshot.error}');
-        //       }
+        elevation: 1,
+        centerTitle: false,
+        title: const Center(child: Text('Bulk Add To List')),
+      ),
+      body:
+          // Text("Label: " + futureResponse.toString())
+          Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8.0),
+        child: (futureResponse == null) ? null : buildFutureBuilder(),
+      ),
+    );
+  }
 
-        //       // By default, show a loading spinner.
-        //       return const CircularProgressIndicator();
-        //     },
-        //   ),
-        // )
-        );
+  FutureBuilder<Response> buildFutureBuilder() {
+    return FutureBuilder<Response>(
+      future: futureResponse,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Text(snapshot.data.toString());
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return const CircularProgressIndicator();
+      },
+    );
   }
 }
