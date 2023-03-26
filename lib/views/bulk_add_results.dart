@@ -127,7 +127,23 @@ class _BulkAddResultsState extends State<BulkAddResults> {
       future: futureResponse,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Text(snapshot.data.toString());
+          return Scaffold(
+              body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+                margin: const EdgeInsets.only(left: 40, right: 40),
+                child: const Text(
+                    "Does this match with what you have in your photo?",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+                const SizedBox(height: 50),
+                Text(snapshot.data.toString())
+          ])
+          );
+
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
