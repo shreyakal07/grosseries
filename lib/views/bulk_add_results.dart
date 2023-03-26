@@ -50,7 +50,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           'https://us-central1-aiplatform.googleapis.com/v1/projects/361247076963/locations/us-central1/endpoints/333490672797483008:predict'),
       headers: <String, String>{
         "Authorization":
-            'Bearer ya29.a0Ael9sCP3Igio52WFZJXQWD8vYlv1mqJDjp2FLwuvBssQOBkwi7ev8hcFAOh03WseZMRJYpto1GYzD0xIRPQBVxzByxbFL200L8Pc_84QX5RtFWOlANxAHQOO7KBGMwTZlv1PnUpCr3b6p67uN8Ru5lnKey3999NhjGhOfCi0zCDSteKR1psOhYgIIyinw62NVrzdMQFAMeY4MSt8etRW0eU9mjrPP6Y5JTh26xgaCgYKAQ0SARASFQF4udJhwwU2jxRFdckz5YIl879fBQ0238',
+            'Bearer ya29.a0Ael9sCMhHXjLOG1VRiNQ3oQRKSRWI0hHCm-0VnaKrZq2M7zErOIrzhJoL49qUAYhyM5uSwtNRbbMWESTEkJTZW_qW1fHdwPcqZj0_FUywlTOZnS1-nWNwEIs82KghR2cHsKE8LdG-7vvoAPsJ5vT3-gsrEz9Kmyq0AOPQHAu5YICgcaW_a2Uk0iag3h5TCCfgQwAEtvG5r6JnL2tP8tQnVk3OtVoI_hDcRghAWcaCgYKAa8SARASFQF4udJhFKPCTKpkRYGS3RyE1dRj4A0238',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(json),
@@ -93,50 +93,44 @@ class _BulkAddResultsState extends State<BulkAddResults> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-                margin: const EdgeInsets.only(left: 40, right: 40),
-                child: const Text(
-                    "Does this match with what you have in your photo?",
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-
-                const SizedBox(height: 25),
-                
-              Text(snapshot.data.toString(), style: TextStyle(fontSize:24, fontWeight: FontWeight.bold)),
-
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(left: 40, right: 40),
+                  child: const Text(
+                      "Does this match with what you have in your photo?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold))),
               const SizedBox(height: 25),
-
-            Container(
-                margin: const EdgeInsets.all(15),
-                child: ElevatedButton(
-                    onPressed: () {
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(10), backgroundColor: Colors.green), 
-                    child: const Text(
-                      "Yes",
-                      style: TextStyle(fontSize: 20),
-                    ))),
-
-            Container(
-                margin: const EdgeInsets.all(15),
-                child: ElevatedButton(
-                    onPressed: () {
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(10), backgroundColor: Colors.red), 
-                    child: const Text(
-                      "No",
-                      style: TextStyle(fontSize: 20),
-                    ))),
-          ],
-        );
-
-
+              Text(snapshot.data.toString(),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 25),
+              Container(
+                  margin: const EdgeInsets.all(15),
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(10),
+                          backgroundColor: Colors.green),
+                      child: const Text(
+                        "Yes",
+                        style: TextStyle(fontSize: 20),
+                      ))),
+              Container(
+                  margin: const EdgeInsets.all(15),
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(10),
+                          backgroundColor: Colors.red),
+                      child: const Text(
+                        "No",
+                        style: TextStyle(fontSize: 20),
+                      ))),
+            ],
+          );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
