@@ -6,22 +6,22 @@ import 'package:http/http.dart' as http;
 // See https://docs.flutter.dev/cookbook/networking/fetch-data
 
 class Response {
-  final String contentType;
-  final String data;
-  var extensions;
+  final List displayNames;
 
-  Response({
-    required this.contentType,
-    required this.data,
-    this.extensions,
-  });
+  Response({required this.displayNames});
 
   factory Response.fromJson(Map<String, dynamic> json) {
-    return Response(
-      contentType: json['contentType'],
-      data: json['data'],
-      extensions: json['extensions'],
-    );
+    return Response(displayNames: json['predictions'][0]['displayName']);
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    String str = "";
+    for (var i = 0; i < displayNames.length; i++) {
+      str += displayNames[i] + ", ";
+    }
+    return str;
   }
 }
 
@@ -35,10 +35,9 @@ class BulkAddResults extends StatefulWidget {
 }
 
 class _BulkAddResultsState extends State<BulkAddResults> {
-  late Future<Response> futureAlbum;
-  late var test;
+  late Future<Response> futureResponse;
 
-  Future<Response> createAlbum() async {
+  Future<Response> getLabel() async {
     print("ENTERED");
     Map json = {
       "instances": [
@@ -84,7 +83,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
   void initState() {
     super.initState();
     // futureAlbum = createAlbum();
-    test = createAlbum();
+    futureResponse = getLabel();
   }
 
   @override
@@ -97,7 +96,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           centerTitle: false,
           title: const Center(child: Text('Bulk Add To List')),
         ),
-        body: Text("JSON Response: " + test.contentType)
+        body: Text("Label: " + futureResponse.toString())
         // Center(
         //   child: FutureBuilder<Album>(
         //     future: futureAlbum,
