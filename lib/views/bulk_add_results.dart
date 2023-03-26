@@ -92,8 +92,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
       future: futureResponse,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Scaffold(
-              body: Column(
+          return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -104,10 +103,39 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-                const SizedBox(height: 50),
-                Text(snapshot.data.toString())
-          ])
-          );
+
+                const SizedBox(height: 25),
+                
+              Text(snapshot.data.toString(), style: TextStyle(fontSize:24, fontWeight: FontWeight.bold)),
+
+              const SizedBox(height: 25),
+
+            Container(
+                margin: const EdgeInsets.all(15),
+                child: ElevatedButton(
+                    onPressed: () {
+                    },
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(10), backgroundColor: Colors.green), 
+                    child: const Text(
+                      "Yes",
+                      style: TextStyle(fontSize: 20),
+                    ))),
+
+            Container(
+                margin: const EdgeInsets.all(15),
+                child: ElevatedButton(
+                    onPressed: () {
+                    },
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(10), backgroundColor: Colors.red), 
+                    child: const Text(
+                      "No",
+                      style: TextStyle(fontSize: 20),
+                    ))),
+          ],
+        );
+
 
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
