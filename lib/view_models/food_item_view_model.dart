@@ -132,4 +132,11 @@ class FoodItemViewModel with ChangeNotifier {
     }
     return null;
   }
+
+  static FoodItem? getFoodItemByName(String name) {
+    for (var item in initialData) {
+      if (item.name == name) return item;
+    }
+    return null;
+  }
 }

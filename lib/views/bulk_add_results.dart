@@ -1,29 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grosseries/models/Response.dart';
+import 'package:grosseries/view_models/food_item_view_model.dart';
 import 'package:http/http.dart' as http;
-
-// See https://docs.flutter.dev/cookbook/networking/fetch-data
-
-class Response {
-  final List displayNames;
-
-  Response({required this.displayNames});
-
-  factory Response.fromJson(Map<String, dynamic> json) {
-    return Response(
-        displayNames: json['predictions'][0]['displayNames'] as List);
-  }
-
-  @override
-  String toString() {
-    String str = "";
-    for (var i = 0; i < displayNames.length; i++) {
-      str += displayNames[i] + ", ";
-    }
-    return str;
-  }
-}
 
 class BulkAddResults extends StatefulWidget {
   final String? imageBytes;
@@ -91,7 +72,16 @@ class _BulkAddResultsState extends State<BulkAddResults> {
     return FutureBuilder<Response>(
       future: futureResponse,
       builder: (context, snapshot) {
+        List labels;
+
         if (snapshot.hasData) {
+          labels = snapshot.data!.displayNames;
+          // removes the 's' from the end of the label
+          for (int i = 0; i < labels.length; i++) {
+            if (labels[i][labels[i].length - 1] == 's') {
+              labels[i] = labels[i].substring(0, labels[i].length - 1);
+            }
+          }
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,35 +94,116 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold))),
               const SizedBox(height: 25),
-              Text(snapshot.data.toString(),
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.all(15),
+                      child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(10),
+                              backgroundColor: Colors.green),
+                          child: const Text(
+                            "Yes",
+                            style: TextStyle(fontSize: 20),
+                          ))),
+                  Container(
+                      margin: const EdgeInsets.all(15),
+                      child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(10),
+                              backgroundColor: Colors.red),
+                          child: const Text(
+                            "No",
+                            style: TextStyle(fontSize: 20),
+                          ))),
+                ],
+              ),
               const SizedBox(height: 25),
-              Container(
-                  margin: const EdgeInsets.all(15),
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(10),
-                          backgroundColor: Colors.green),
-                      child: const Text(
-                        "Yes",
-                        style: TextStyle(fontSize: 20),
-                      ))),
-              Container(
-                  margin: const EdgeInsets.all(15),
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(10),
-                          backgroundColor: Colors.red),
-                      child: const Text(
-                        "No",
-                        style: TextStyle(fontSize: 20),
-                      ))),
+              // needs to be updated if we have multiple labels
+              FoodItemViewModel.getFoodItemByName(labels[0]) != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 100,
+                            margin: const EdgeInsets.only(right: 20),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                      FoodItemViewModel.getFoodItemByName(
+                                              labels[0])!
+                                          .image),
+                                ))),
+                        Text(snapshot.data.toString(),
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold))
+                      ],
+                    )
+                  : Text(
+                      "${snapshot.data} has been detected but is not in our inventory."),
             ],
           );
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                    textAlign: TextAlign.center,
+                    "Aw Shucks!",
+                    style:
+                        TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+                Container(
+                    height: 200,
+                    margin: const EdgeInsets.only(top: 30, bottom: 30),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: const Image(
+                          fit: BoxFit.cover,
+                          image: AssetImage("assets/sad-corn-cartoon.jpg"),
+                        ))),
+                const Text(
+                  textAlign: TextAlign.center,
+                  "Something went wrong.\n We could not identify the image.",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Container(
+                    margin: const EdgeInsets.all(15),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          // this does not work.
+                          // navigator does work but i don't want to do that becuase of the back button offsetting the title of the page
+                          // need to figure out how to do replace navigator with goRouter in bulk_add.dart
+                          GoRouter.of(context).go("/bulk_add");
+                        },
+                        style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(10),
+                            backgroundColor: Colors.orange),
+                        child: const Text(
+                          "Try Again",
+                          style: TextStyle(fontSize: 20),
+                        ))),
+                Container(
+                    margin: const EdgeInsets.all(15),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          GoRouter.of(context).go("/add_item");
+                        },
+                        style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(10),
+                            backgroundColor: Colors.orange),
+                        child: const Text(
+                          "Add Item Manually",
+                          style: TextStyle(fontSize: 20),
+                        )))
+              ]);
         }
 
         return const CircularProgressIndicator();
