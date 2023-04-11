@@ -93,14 +93,15 @@ class _BulkAddResultsState extends State<BulkAddResults> {
             } else if (labels[i][labels[i].length - 1] == 's') {
               labels[i] = labels[i].substring(0, labels[i].length - 1);
             }
-
-            food[labels[i]] = {
-              'id': FoodItemViewModel.getFoodItemByName(labels[i])?.id,
-              'quantity': 1,
-              'storage': "Fridge",
-              'owner': currentUser.firstName + " " + currentUser.lastName,
-              'datePurchased': DateTime.now()
-            };
+            if (FoodItemViewModel.getFoodItemByName(labels[i]) != null) {
+              food[labels[i]] = {
+                'id': FoodItemViewModel.getFoodItemByName(labels[i])?.id,
+                'quantity': 1,
+                'storage': "Fridge",
+                'owner': currentUser.firstName + " " + currentUser.lastName,
+                'datePurchased': DateTime.now()
+              };
+            }
           }
           debugPrint(food.toString());
           // debugPrint(FoodItemViewModel.getFoodItemByName(labels[0])?.name);
