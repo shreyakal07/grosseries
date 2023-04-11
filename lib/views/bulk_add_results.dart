@@ -134,16 +134,17 @@ class _BulkAddResultsState extends State<BulkAddResults> {
 
         if (snapshot.hasData) {
           labels = snapshot.data!.displayNames;
-          // removes the 's' from the end of the label
+          // removes the 's'  or 'es' from the end of the label
           for (int i = 0; i < labels.length; i++) {
             if (labels[i].substring(labels[i].length - 2) == 'es') {
               labels[i] = labels[i].substring(0, labels[i].length - 2);
             } else if (labels[i][labels[i].length - 1] == 's') {
               labels[i] = labels[i].substring(0, labels[i].length - 1);
             }
+
             if (FoodItemViewModel.getFoodItemByName(labels[i]) != null) {
               food[labels[i]] = {
-                'index': i,
+                'index': i, // the index of the checkbox in checkboxes array
                 'id': FoodItemViewModel.getFoodItemByName(labels[i])!.id,
                 'quantity': 1,
                 'storage': "Fridge",
