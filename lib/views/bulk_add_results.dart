@@ -114,7 +114,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
               Container(
                   margin: const EdgeInsets.only(left: 40, right: 40),
                   child: const Text(
-                      "Does this match with what you have in your photo?",
+                      "Select all ingredients that match with photo.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold))),

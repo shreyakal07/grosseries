@@ -83,14 +83,6 @@ class FoodListEntryViewModel with ChangeNotifier {
       dateAdded: dateAdded,
     );
 
-    debugPrint(entry == null ? "NULL" : "NOT NULL");
-    debugPrint("BLAHBLAH");
-    debugPrint("entry id ${id}");
-    debugPrint("storage ${storage}");
-    debugPrint("quantity ${quantity}");
-    debugPrint("owner ${owner}");
-    debugPrint("dateAdded ${dateAdded.toString()}");
-
     // Add entry to overall list
     _foodItems.add(entry);
 
