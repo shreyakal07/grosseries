@@ -135,7 +135,7 @@ class FoodItemViewModel with ChangeNotifier {
 
   static FoodItem? getFoodItemByName(String name) {
     for (var item in initialData) {
-      if (item.name == name) return item;
+      if (item.name.toLowerCase() == name.toLowerCase()) return item;
     }
     return null;
   }

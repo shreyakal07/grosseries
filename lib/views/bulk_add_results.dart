@@ -28,10 +28,10 @@ class _BulkAddResultsState extends State<BulkAddResults> {
 
     final response = await http.post(
       Uri.parse(
-          'https://us-central1-aiplatform.googleapis.com/v1/projects/361247076963/locations/us-central1/endpoints/333490672797483008:predict'),
+          'https://us-central1-aiplatform.googleapis.com/v1/projects/844535666912/locations/us-central1/endpoints/7942709271332913152:predict'),
       headers: <String, String>{
         "Authorization":
-            'Bearer ya29.a0Ael9sCNncjCXbgWF6hFVnQ4ge9BfVDENfbYA40oquT7y0kd_Haw23MrK58jJq4XbEgVb-8cYCYxjsAlqblq3OVfxMH4n2Gb4OyPQoeUpTboLm2Th-Pk26drGqtR_ixbYjAKtcei4KlfgejlZF-3OeGRwhcsHqn8SaJ0aWERAjpbP0slkweVcdJsU63y4nVnNCYANnS5v9zr5VpLKpBCLIBQaDdMPD8IZRhcYzwaCgYKAZQSARESFQF4udJhB4Owxu0BBPhC6cJKh2p6SA0237',
+            'Bearer ya29.a0Ael9sCM9qbDU85Jw5JnYKtXeN5CapE44TqoZk1kauikG4nDvsf9h8aGh3nCESSuCVZ7pGVMorpKsV9T3pcidqNePLfuISBQVFQimvd3vH8VF8zpDYL_IzGd2MGwDtcmgr_SPXRCHyMeuyiqYsU5jiYNhl5zPx-2CrSdxNOI_iWiqiCHVmJXwiyDVd4INA7cqcBPw3D-BKl7CWMWaTOwuyzyQOxsvwy_SB7ZveRIaCgYKAW8SARESFQF4udJhJBAMdjhI9-7xwo8sBDCRCA0238',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(json),
@@ -82,6 +82,8 @@ class _BulkAddResultsState extends State<BulkAddResults> {
               labels[i] = labels[i].substring(0, labels[i].length - 1);
             }
           }
+          debugPrint(FoodItemViewModel.getFoodItemByName(labels[0])?.name);
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,30 +126,63 @@ class _BulkAddResultsState extends State<BulkAddResults> {
               ),
               const SizedBox(height: 25),
               // needs to be updated if we have multiple labels
-              FoodItemViewModel.getFoodItemByName(labels[0]) != null
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                            width: 100,
-                            margin: const EdgeInsets.only(right: 20),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                      FoodItemViewModel.getFoodItemByName(
-                                              labels[0])!
-                                          .image),
-                                ))),
-                        Text(snapshot.data.toString(),
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold))
-                      ],
-                    )
-                  : Text(
-                      "${snapshot.data} has been detected but is not in our inventory."),
+              Expanded(
+                  child: ListView.builder(
+                itemCount: labels.length,
+                itemBuilder: (context, index) => FoodItemViewModel
+                            .getFoodItemByName(labels[index]) !=
+                        null
+                    ? Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                width: 100,
+                                margin: const EdgeInsets.only(right: 20),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                          FoodItemViewModel.getFoodItemByName(
+                                                  labels[index])!
+                                              .image),
+                                    ))),
+                            Text(labels[index],
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold))
+                          ],
+                        ))
+                    : Text(
+                        "${labels[index]} has been detected but is not in our inventory."),
+              )),
+
+              // FoodItemViewModel.getFoodItemByName(labels[0]) != null
+              //     ? Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: [
+              //           Container(
+              //               width: 100,
+              //               margin: const EdgeInsets.only(right: 20),
+              //               child: ClipRRect(
+              //                   borderRadius: BorderRadius.circular(16),
+              //                   child: Image(
+              //                     fit: BoxFit.cover,
+              //                     image: AssetImage(
+              //                         FoodItemViewModel.getFoodItemByName(
+              //                                 labels[0])!
+              //                             .image),
+              //                   ))),
+              //           Text(snapshot.data.toString(),
+              //               style: const TextStyle(
+              //                   fontSize: 24, fontWeight: FontWeight.bold))
+              //         ],
+              //       )
+              //     : Text(
+              //         "${snapshot.data} has been detected but is not in our inventory."),
             ],
           );
         } else if (snapshot.hasError) {
