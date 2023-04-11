@@ -98,7 +98,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                 'id': FoodItemViewModel.getFoodItemByName(labels[i])!.id,
                 'quantity': 1,
                 'storage': "Fridge",
-                'owner': currentUser.firstName + " " + currentUser.lastName,
+                'owner': currentUser.email,
                 'datePurchased': DateTime.now(),
                 'correct': true,
               };
@@ -184,30 +184,6 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                         "${labels[index]} has been detected but is not in our inventory."),
               )),
 
-              // FoodItemViewModel.getFoodItemByName(labels[0]) != null
-              //     ? Row(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         crossAxisAlignment: CrossAxisAlignment.center,
-              //         children: [
-              //           Container(
-              //               width: 100,
-              //               margin: const EdgeInsets.only(right: 20),
-              //               child: ClipRRect(
-              //                   borderRadius: BorderRadius.circular(16),
-              //                   child: Image(
-              //                     fit: BoxFit.cover,
-              //                     image: AssetImage(
-              //                         FoodItemViewModel.getFoodItemByName(
-              //                                 labels[0])!
-              //                             .image),
-              //                   ))),
-              //           Text(snapshot.data.toString(),
-              //               style: const TextStyle(
-              //                   fontSize: 24, fontWeight: FontWeight.bold))
-              //         ],
-              //       )
-              //     : Text(
-              //         "${snapshot.data} has been detected but is not in our inventory."),
               ElevatedButton(
                   onPressed: () {
                     food.forEach((key, value) {
@@ -221,6 +197,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                               currentUser?.notificationsEnabled,
                               currentUser?.notificationDayAmount,
                             );
+                        GoRouter.of(context).go("/");
                       }
                     });
                   },
