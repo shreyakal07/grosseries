@@ -5,6 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:grosseries/models/Response.dart';
 import 'package:grosseries/view_models/food_item_view_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
+import '../view_models/food_list_entry_view_model.dart';
+import '../view_models/user_view_model.dart';
 
 class BulkAddResults extends StatefulWidget {
   final String? imageBytes;
@@ -17,6 +22,7 @@ class BulkAddResults extends StatefulWidget {
 
 class _BulkAddResultsState extends State<BulkAddResults> {
   late Future<Response>? futureResponse;
+  Map food = {};
 
   Future<Response> getLabel() async {
     Map json = {
@@ -31,7 +37,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           'https://us-central1-aiplatform.googleapis.com/v1/projects/844535666912/locations/us-central1/endpoints/7942709271332913152:predict'),
       headers: <String, String>{
         "Authorization":
-            'Bearer ya29.a0Ael9sCM9qbDU85Jw5JnYKtXeN5CapE44TqoZk1kauikG4nDvsf9h8aGh3nCESSuCVZ7pGVMorpKsV9T3pcidqNePLfuISBQVFQimvd3vH8VF8zpDYL_IzGd2MGwDtcmgr_SPXRCHyMeuyiqYsU5jiYNhl5zPx-2CrSdxNOI_iWiqiCHVmJXwiyDVd4INA7cqcBPw3D-BKl7CWMWaTOwuyzyQOxsvwy_SB7ZveRIaCgYKAW8SARESFQF4udJhJBAMdjhI9-7xwo8sBDCRCA0238',
+            'Bearer ya29.a0Ael9sCOsKpXAQz5_S0mq0JvGHiETZTD_8r7vTwdEnatbr0TkqsnL132zdsWYz6T0tGLtWeuz3yzqh2aih3einDlkjAOknzGGCJX2qkD8B5koTn52ltojnaLewvYb5YxHFNGDKRTHk-rC9j4RDPb-Pr0FDXQqBGmiuOxj_KbySRDekdvjIEdFM1R7JGlkI4EF_Pz-j82V4RC3xs-0xmIVI1I3NseBgxr0rgjjifAaCgYKAdYSARESFQF4udJhS5Z0YDplegIB7sz3NyUeAg0238',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(json),
@@ -52,6 +58,8 @@ class _BulkAddResultsState extends State<BulkAddResults> {
 
   @override
   Widget build(BuildContext context) {
+    User? currentUser = context.watch<UserViewModel>().currentUser;
+
     return Scaffold(
       backgroundColor: Colors.yellow[200],
       appBar: AppBar(
@@ -63,12 +71,14 @@ class _BulkAddResultsState extends State<BulkAddResults> {
       body: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(8.0),
-        child: (futureResponse == null) ? null : buildFutureBuilder(),
+        child: (futureResponse == null)
+            ? null
+            : buildFutureBuilder(context, currentUser),
       ),
     );
   }
 
-  FutureBuilder<Response> buildFutureBuilder() {
+  FutureBuilder<Response> buildFutureBuilder(context, currentUser) {
     return FutureBuilder<Response>(
       future: futureResponse,
       builder: (context, snapshot) {
@@ -78,11 +88,21 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           labels = snapshot.data!.displayNames;
           // removes the 's' from the end of the label
           for (int i = 0; i < labels.length; i++) {
-            if (labels[i][labels[i].length - 1] == 's') {
+            if (labels[i][labels[i].length - 1] == 's' ||
+                labels[i].substring(labels[i].length - 2) == 'es') {
               labels[i] = labels[i].substring(0, labels[i].length - 1);
             }
+
+            food[labels[i]] = {
+              'id': FoodItemViewModel.getFoodItemByName(labels[i])?.id,
+              'quantity': 1,
+              'storage': "Fridge",
+              'owner': currentUser.firstName + " " + currentUser.lastName,
+              'datePurchased': DateTime.now()
+            };
           }
-          debugPrint(FoodItemViewModel.getFoodItemByName(labels[0])?.name);
+          debugPrint(food.toString());
+          // debugPrint(FoodItemViewModel.getFoodItemByName(labels[0])?.name);
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -183,6 +203,21 @@ class _BulkAddResultsState extends State<BulkAddResults> {
               //       )
               //     : Text(
               //         "${snapshot.data} has been detected but is not in our inventory."),
+              ElevatedButton(
+                  onPressed: () {
+                    food.forEach((key, value) {
+                      context.read<FoodListEntryViewModel>().addFoodItemEntry(
+                            food[key]['id'],
+                            food[key]['storage'],
+                            food[key]['quantity'],
+                            food[key]['owner'],
+                            food[key]['datePurchased'],
+                            currentUser?.notificationsEnabled,
+                            currentUser?.notificationDayAmount,
+                          );
+                    });
+                  },
+                  child: const Text("Add Items")),
             ],
           );
         } else if (snapshot.hasError) {

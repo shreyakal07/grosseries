@@ -107,6 +107,18 @@ final List<FoodItem> initialData = [
     image: "assets/food-items/shrimp.jpeg",
     daysToExpire: 30,
   ),
+  FoodItem(
+      id: 14,
+      name: "Lemon",
+      category: 1,
+      image: "assets/food-items/lemon.png",
+      daysToExpire: 7),
+  FoodItem(
+      id: 15,
+      name: "Potato",
+      category: 4,
+      image: "assets/food-items/potato.jpg",
+      daysToExpire: 7),
 ];
 
 class FoodItemViewModel with ChangeNotifier {
