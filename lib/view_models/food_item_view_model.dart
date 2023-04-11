@@ -110,13 +110,13 @@ final List<FoodItem> initialData = [
   FoodItem(
       id: 14,
       name: "Lemon",
-      category: 1,
+      category: 0,
       image: "assets/food-items/lemon.png",
       daysToExpire: 7),
   FoodItem(
       id: 15,
       name: "Potato",
-      category: 4,
+      category: 0,
       image: "assets/food-items/potato.jpg",
       daysToExpire: 7),
 ];
