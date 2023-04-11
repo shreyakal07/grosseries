@@ -37,7 +37,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           'https://us-central1-aiplatform.googleapis.com/v1/projects/844535666912/locations/us-central1/endpoints/7942709271332913152:predict'),
       headers: <String, String>{
         "Authorization":
-            'Bearer ya29.a0Ael9sCOsKpXAQz5_S0mq0JvGHiETZTD_8r7vTwdEnatbr0TkqsnL132zdsWYz6T0tGLtWeuz3yzqh2aih3einDlkjAOknzGGCJX2qkD8B5koTn52ltojnaLewvYb5YxHFNGDKRTHk-rC9j4RDPb-Pr0FDXQqBGmiuOxj_KbySRDekdvjIEdFM1R7JGlkI4EF_Pz-j82V4RC3xs-0xmIVI1I3NseBgxr0rgjjifAaCgYKAdYSARESFQF4udJhS5Z0YDplegIB7sz3NyUeAg0238',
+            'Bearer ya29.a0Ael9sCNgjJvBuFHpyG8v6gDFL-ZAXh8EH8bhU5PfVOQgyWEnAqTMzzw4FTX4BJ63AbxLcJRfm6Ecded8s1-E3Bt3z0OmbQVUN7XHpWNr1P2qj67PbHQun5wMxGo0WmobNMZnYoynrTkxAgocgb_jXhv8RGT--Yv-4ww4dhL75NjJFMbX7vJjoh9YHjDKmJzwjbcRt4vhEPTNZ28tNoXtctWbAccChoOpM2XJld8aCgYKAYYSARESFQF4udJhELwJXRBC3aUkMDCbU0WQCw0238',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(json),
@@ -95,11 +95,12 @@ class _BulkAddResultsState extends State<BulkAddResults> {
             }
             if (FoodItemViewModel.getFoodItemByName(labels[i]) != null) {
               food[labels[i]] = {
-                'id': FoodItemViewModel.getFoodItemByName(labels[i])?.id,
+                'id': FoodItemViewModel.getFoodItemByName(labels[i])!.id,
                 'quantity': 1,
                 'storage': "Fridge",
                 'owner': currentUser.firstName + " " + currentUser.lastName,
-                'datePurchased': DateTime.now()
+                'datePurchased': DateTime.now(),
+                'correct': true,
               };
             }
           }
@@ -208,15 +209,17 @@ class _BulkAddResultsState extends State<BulkAddResults> {
               ElevatedButton(
                   onPressed: () {
                     food.forEach((key, value) {
-                      context.read<FoodListEntryViewModel>().addFoodItemEntry(
-                            food[key]['id'],
-                            food[key]['storage'],
-                            food[key]['quantity'],
-                            food[key]['owner'],
-                            food[key]['datePurchased'],
-                            currentUser?.notificationsEnabled,
-                            currentUser?.notificationDayAmount,
-                          );
+                      if (value['correct']) {
+                        context.read<FoodListEntryViewModel>().addFoodItemEntry(
+                              food[key]['id'],
+                              food[key]['storage'],
+                              food[key]['quantity'],
+                              food[key]['owner'],
+                              food[key]['datePurchased'],
+                              currentUser?.notificationsEnabled,
+                              currentUser?.notificationDayAmount,
+                            );
+                      }
                     });
                   },
                   child: const Text("Add Items")),
