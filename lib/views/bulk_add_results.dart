@@ -119,35 +119,37 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold))),
               const SizedBox(height: 25),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.all(15),
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(10),
-                              backgroundColor: Colors.green),
-                          child: const Text(
-                            "Yes",
-                            style: TextStyle(fontSize: 20),
-                          ))),
-                  Container(
-                      margin: const EdgeInsets.all(15),
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(10),
-                              backgroundColor: Colors.red),
-                          child: const Text(
-                            "No",
-                            style: TextStyle(fontSize: 20),
-                          ))),
-                ],
-              ),
-              const SizedBox(height: 25),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     Container(
+              //         margin: const EdgeInsets.all(15),
+              //         child: ElevatedButton(
+              //             onPressed: () {},
+              //             style: ElevatedButton.styleFrom(
+              //                 padding: const EdgeInsets.all(10),
+              //                 backgroundColor: Colors.green),
+              //             child: const Text(
+              //               "Yes",
+              //               style: TextStyle(fontSize: 20),
+              //             ))),
+              //     Container(
+              //         margin: const EdgeInsets.all(15),
+              //         child: ElevatedButton(
+              //             onPressed: () {},
+              //             style: ElevatedButton.styleFrom(
+              //                 padding: const EdgeInsets.all(10),
+              //                 backgroundColor: Colors.red),
+              //             child: const Text(
+              //               "No",
+              //               style: TextStyle(fontSize: 20),
+              //             ))),
+              //   ],
+              // ),
+              // const SizedBox(height: 25),
+
+              
               // needs to be updated if we have multiple labels
               Expanded(
                   child: ListView.builder(
