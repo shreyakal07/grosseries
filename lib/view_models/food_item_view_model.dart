@@ -107,6 +107,18 @@ final List<FoodItem> initialData = [
     image: "assets/food-items/shrimp.jpeg",
     daysToExpire: 30,
   ),
+  FoodItem(
+      id: 14,
+      name: "Lemon",
+      category: 0,
+      image: "assets/food-items/lemon.png",
+      daysToExpire: 7),
+  FoodItem(
+      id: 15,
+      name: "Potato",
+      category: 0,
+      image: "assets/food-items/potato.jpg",
+      daysToExpire: 7),
 ];
 
 class FoodItemViewModel with ChangeNotifier {
@@ -129,6 +141,13 @@ class FoodItemViewModel with ChangeNotifier {
   static FoodItem? getFoodItem(int id) {
     for (var item in initialData) {
       if (item.id == id) return item;
+    }
+    return null;
+  }
+
+  static FoodItem? getFoodItemByName(String name) {
+    for (var item in initialData) {
+      if (item.name.toLowerCase() == name.toLowerCase()) return item;
     }
     return null;
   }

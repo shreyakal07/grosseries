@@ -20,7 +20,6 @@ class _AddFoodCategoryViewState extends State<AddFoodCategoryView> {
   FoodCategory? _selectedCategory;
 
   List<FoodItem>? _filteredList;
-  String? value;
 
   void _onCardTapped(FoodCategory category) {
     setState(() {
@@ -155,14 +154,13 @@ class _AddFoodCategoryViewState extends State<AddFoodCategoryView> {
                         ),
                       ),
                       suffixIcon: Visibility(
-                          visible: value!.isNotEmpty ? true : false,
+                          visible: textEditingController.value.text.isNotEmpty
+                              ? true
+                              : false,
                           child: IconButton(
                             icon: const Icon(Icons.clear),
                             onPressed: () => {
                               textEditingController.clear(),
-                              setState(() {
-                                value = "";
-                              }),
                             },
                           )),
                     ),

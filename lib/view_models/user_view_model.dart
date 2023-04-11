@@ -23,6 +23,13 @@ final Map<String, User> initialData = {
     email: "licrystal33@gmail.com",
     password: "password",
   ),
+  "a@gmail.com": User(
+    id: 4,
+    firstName: "A",
+    lastName: "A",
+    email: "a@gmail.com",
+    password: "p",
+  ),
 };
 
 class UserViewModel with ChangeNotifier {

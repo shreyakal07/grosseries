@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'bulk_add_results.dart';
 
 class BulkAdd extends StatefulWidget {
   const BulkAdd({super.key});
@@ -21,7 +24,15 @@ class _BulkAddState extends State<BulkAdd> {
       final image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      if (mounted) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BulkAddResults(
+                    imageBytes: base64Encode(imageTemp.readAsBytesSync()))));
+      }
+
+      // setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
       // print('Failed to pick image: $e');
     }
@@ -32,7 +43,14 @@ class _BulkAddState extends State<BulkAdd> {
       final image = await _picker.pickImage(source: ImageSource.camera);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      if (mounted) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BulkAddResults(
+                    imageBytes: base64Encode(imageTemp.readAsBytesSync()))));
+      }
+      // setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
       // print('Failed to pick image: $e');
     }
@@ -46,11 +64,6 @@ class _BulkAddState extends State<BulkAdd> {
           backgroundColor: Colors.yellow[200],
           elevation: 1,
           centerTitle: false,
-          // leading: IconButton(
-          //     icon: const Icon(Icons.chevron_left, color: Colors.black),
-          //     onPressed: (() {
-          //       GoRouter.of(context).go('/');
-          //     })),
           title: const Center(child: Text('Bulk Add To List')),
         ),
         body: Column(
@@ -70,6 +83,14 @@ class _BulkAddState extends State<BulkAdd> {
                 child: ElevatedButton(
                     onPressed: () {
                       pickImageCamera();
+                      // if (image != null) {
+                      // List<int> imageBytes = image!.readAsBytesSync();
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => BulkAddResults(
+                      //             imageBytes: base64Encode(imageBytes))));
+                      // }
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),
@@ -82,12 +103,20 @@ class _BulkAddState extends State<BulkAdd> {
                 child: ElevatedButton(
                     onPressed: () {
                       pickImage();
+                      // if (image != null) {
+                      //   List<int> imageBytes = image!.readAsBytesSync();
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => BulkAddResults(
+                      //               imageBytes: base64Encode(imageBytes))));
+                      // }
                     },
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10)),
                     child: const Text("Upload from Gallery",
                         style: TextStyle(fontSize: 20)))),
-            image != null ? Image.file(image!) : Text("no image")
+            // image != null ? Image.file(image!) : const Text("no image")
           ],
         ));
   }
