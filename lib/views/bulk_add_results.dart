@@ -88,8 +88,9 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           labels = snapshot.data!.displayNames;
           // removes the 's' from the end of the label
           for (int i = 0; i < labels.length; i++) {
-            if (labels[i][labels[i].length - 1] == 's' ||
-                labels[i].substring(labels[i].length - 2) == 'es') {
+            if (labels[i].substring(labels[i].length - 2) == 'es') {
+              labels[i] = labels[i].substring(0, labels[i].length - 2);
+            } else if (labels[i][labels[i].length - 1] == 's') {
               labels[i] = labels[i].substring(0, labels[i].length - 1);
             }
 
