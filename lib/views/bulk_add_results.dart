@@ -38,7 +38,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
           'https://us-central1-aiplatform.googleapis.com/v1/projects/844535666912/locations/us-central1/endpoints/7942709271332913152:predict'),
       headers: <String, String>{
         "Authorization":
-            'Bearer ya29.a0Ael9sCNgjJvBuFHpyG8v6gDFL-ZAXh8EH8bhU5PfVOQgyWEnAqTMzzw4FTX4BJ63AbxLcJRfm6Ecded8s1-E3Bt3z0OmbQVUN7XHpWNr1P2qj67PbHQun5wMxGo0WmobNMZnYoynrTkxAgocgb_jXhv8RGT--Yv-4ww4dhL75NjJFMbX7vJjoh9YHjDKmJzwjbcRt4vhEPTNZ28tNoXtctWbAccChoOpM2XJld8aCgYKAYYSARESFQF4udJhELwJXRBC3aUkMDCbU0WQCw0238',
+            'Bearer ya29.a0Ael9sCNSs5OURTT7sCR4i7SoumLCsmIDyzjkUbWk8Cwl9vC00ycKiabnnHd5toOr3jjdq5UD5MIOxCgXdEZuxyRfjwPgUyGklneC0qk6XLLo_wivOuSF6QCihxZQd-o3NDKTCYWnYxaWxnpY3ykQ5I5puWAxy3DzH_hDXzq6roaCMcMjlTH7wdDnTtV_mFV5i3_Xam6CkoeEQm4mX2Y1erh_5VpW6ZmT5vp-HOQaCgYKATUSARESFQF4udJhPiDUzIA3HSuM1ZeR7T6F7Q0238',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(json),
@@ -105,8 +105,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
               };
             }
           }
-          debugPrint(food.toString());
-          // debugPrint(FoodItemViewModel.getFoodItemByName(labels[0])?.name);
+          // debugPrint(food.toString());
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -120,38 +119,6 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold))),
               const SizedBox(height: 25),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   children: [
-              //     Container(
-              //         margin: const EdgeInsets.all(15),
-              //         child: ElevatedButton(
-              //             onPressed: () {},
-              //             style: ElevatedButton.styleFrom(
-              //                 padding: const EdgeInsets.all(10),
-              //                 backgroundColor: Colors.green),
-              //             child: const Text(
-              //               "Yes",
-              //               style: TextStyle(fontSize: 20),
-              //             ))),
-              //     Container(
-              //         margin: const EdgeInsets.all(15),
-              //         child: ElevatedButton(
-              //             onPressed: () {},
-              //             style: ElevatedButton.styleFrom(
-              //                 padding: const EdgeInsets.all(10),
-              //                 backgroundColor: Colors.red),
-              //             child: const Text(
-              //               "No",
-              //               style: TextStyle(fontSize: 20),
-              //             ))),
-              //   ],
-              // ),
-              // const SizedBox(height: 25),
-
-              
-              // needs to be updated if we have multiple labels
               Expanded(
                   child: ListView.builder(
                 itemCount: labels.length,
@@ -167,32 +134,36 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                             CheckboxListTile(
                               activeColor: Colors.green,
                               value: checkBoxValue,
-                              onChanged: (checkBoxValue) => setState(() => food[labels[index]]["correct"] = checkBoxValue!
-                            ),
-                              title: Row (children: [
-                                Container(
-                                  width: 100,
-                                  margin: const EdgeInsets.only(right: 20),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Image(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(
-                                            FoodItemViewModel.getFoodItemByName(
-                                                    labels[index])!
+                              onChanged: (checkBoxValue) => setState(() =>
+                                  food[labels[index]]["correct"] =
+                                      checkBoxValue!),
+                              title: Row(
+                                children: [
+                                  Container(
+                                      width: 100,
+                                      margin: const EdgeInsets.only(right: 20),
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Image(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage(FoodItemViewModel
+                                                    .getFoodItemByName(
+                                                        labels[index])!
                                                 .image),
-                                      ))),
+                                          ))),
                                   Text(labels[index],
                                       style: const TextStyle(
-                                          fontSize: 24, fontWeight: FontWeight.bold))
-                                    ],
-                                  ),
-                            )],
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                            )
+                          ],
                         ))
                     : Text(
                         "${labels[index]} has been detected but is not in our inventory."),
               )),
-
               ElevatedButton(
                   onPressed: () {
                     food.forEach((key, value) {
@@ -241,10 +212,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                     margin: const EdgeInsets.all(15),
                     child: ElevatedButton(
                         onPressed: () {
-                          // this does not work.
-                          // navigator does work but i don't want to do that becuase of the back button offsetting the title of the page
-                          // need to figure out how to do replace navigator with goRouter in bulk_add.dart
-                          GoRouter.of(context).go("/bulk_add");
+                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(10),
