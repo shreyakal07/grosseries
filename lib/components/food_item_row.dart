@@ -72,7 +72,7 @@ class FoodItemRow extends StatelessWidget {
             ),
             UserBubble(
                 user:
-                    "${context.read<UserViewModel>().userDatabase[foodItems[index].owner]!.firstName} ${context.read<UserViewModel>().userDatabase[foodItems[index].owner]!.lastName}",
+                    "${context.read<UserViewModel>().userDatabase[foodItems[index].owner]?.firstName} ${context.read<UserViewModel>().userDatabase[foodItems[index].owner]?.lastName}",
                 borderSize: 4,
                 textSize: 15),
             Tag(
