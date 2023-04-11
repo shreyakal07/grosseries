@@ -23,6 +23,7 @@ class BulkAddResults extends StatefulWidget {
 class _BulkAddResultsState extends State<BulkAddResults> {
   late Future<Response>? futureResponse;
   Map food = {};
+  bool checkBoxValue = false;
 
   Future<Response> getLabel() async {
     Map json = {
@@ -163,22 +164,30 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                                width: 100,
-                                margin: const EdgeInsets.only(right: 20),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: Image(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                          FoodItemViewModel.getFoodItemByName(
-                                                  labels[index])!
-                                              .image),
-                                    ))),
-                            Text(labels[index],
-                                style: const TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold))
-                          ],
+                            CheckboxListTile(
+                              activeColor: Colors.green,
+                              value: checkBoxValue,
+                              onChanged: (checkBoxValue) => setState(() => food[labels[index]]["correct"] = checkBoxValue!
+                            ),
+                              title: Row (children: [
+                                Container(
+                                  width: 100,
+                                  margin: const EdgeInsets.only(right: 20),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Image(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                            FoodItemViewModel.getFoodItemByName(
+                                                    labels[index])!
+                                                .image),
+                                      ))),
+                                  Text(labels[index],
+                                      style: const TextStyle(
+                                          fontSize: 24, fontWeight: FontWeight.bold))
+                                    ],
+                                  ),
+                            )],
                         ))
                     : Text(
                         "${labels[index]} has been detected but is not in our inventory."),
