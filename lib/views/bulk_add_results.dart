@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grosseries/models/Response.dart';
+import 'package:grosseries/models/checkbox_state.dart';
 import 'package:grosseries/view_models/food_item_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -24,6 +25,8 @@ class _BulkAddResultsState extends State<BulkAddResults> {
   late Future<Response>? futureResponse;
   Map food = {};
   bool checkBoxValue = false;
+  final checkboxes = [];
+  final allCheckboxes = CheckboxState(label: "All Labeled Items", value: false);
 
   Future<Response> getLabel() async {
     Map json = {
@@ -74,12 +77,56 @@ class _BulkAddResultsState extends State<BulkAddResults> {
         padding: const EdgeInsets.all(8.0),
         child: (futureResponse == null)
             ? null
-            : buildFutureBuilder(context, currentUser),
+            : buildFutureBuilder(context, currentUser, food),
       ),
     );
   }
 
-  FutureBuilder<Response> buildFutureBuilder(context, currentUser) {
+  FutureBuilder<Response> buildFutureBuilder(context, currentUser, food) {
+    void toggleAllCheckboxes(bool? value) {
+      if (value == null) return;
+
+      setState(() {
+        allCheckboxes.value = value;
+        checkboxes.forEach((checkbox) => checkbox.value = value);
+      });
+    }
+
+    Widget buildCheckbox(CheckboxState checkbox) => CheckboxListTile(
+          activeColor: Colors.green,
+          controlAffinity: ListTileControlAffinity.leading,
+          value: checkbox.value,
+          title: Row(
+            children: [
+              Container(
+                  width: 100,
+                  margin: const EdgeInsets.only(right: 20),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                            FoodItemViewModel.getFoodItemByName(checkbox.label)!
+                                .image),
+                      ))),
+              Text(checkbox.label,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold))
+            ],
+          ),
+          onChanged: (value) => setState(() {
+            checkbox.value = value!;
+          }),
+        );
+
+    Widget buildAllCheckbox(CheckboxState checkbox) => CheckboxListTile(
+        activeColor: Colors.green,
+        controlAffinity: ListTileControlAffinity.leading,
+        value: checkbox.value,
+        title: Text(checkbox.label,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        onChanged: (value) => toggleAllCheckboxes(value));
+
     return FutureBuilder<Response>(
       future: futureResponse,
       builder: (context, snapshot) {
@@ -96,13 +143,15 @@ class _BulkAddResultsState extends State<BulkAddResults> {
             }
             if (FoodItemViewModel.getFoodItemByName(labels[i]) != null) {
               food[labels[i]] = {
+                'index': i,
                 'id': FoodItemViewModel.getFoodItemByName(labels[i])!.id,
                 'quantity': 1,
                 'storage': "Fridge",
                 'owner': currentUser.email,
                 'datePurchased': DateTime.now(),
-                'correct': true,
+                // 'checkbox': CheckboxState(value: false),
               };
+              checkboxes.add(CheckboxState(label: labels[i], value: false));
             }
           }
           // debugPrint(food.toString());
@@ -119,6 +168,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold))),
               const SizedBox(height: 25),
+              buildAllCheckbox(allCheckboxes),
               Expanded(
                   child: ListView.builder(
                 itemCount: labels.length,
@@ -127,47 +177,22 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                         null
                     ? Container(
                         margin: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CheckboxListTile(
-                              activeColor: Colors.green,
-                              value: checkBoxValue,
-                              onChanged: (checkBoxValue) => setState(() =>
-                                  food[labels[index]]["correct"] =
-                                      checkBoxValue!),
-                              title: Row(
-                                children: [
-                                  Container(
-                                      width: 100,
-                                      margin: const EdgeInsets.only(right: 20),
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          child: Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(FoodItemViewModel
-                                                    .getFoodItemByName(
-                                                        labels[index])!
-                                                .image),
-                                          ))),
-                                  Text(labels[index],
-                                      style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold))
-                                ],
-                              ),
-                            )
-                          ],
-                        ))
+                        child:
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                            //   children: [
+                            buildCheckbox(checkboxes[index])
+                        // ],
+                        // )
+                        )
                     : Text(
                         "${labels[index]} has been detected but is not in our inventory."),
               )),
               ElevatedButton(
                   onPressed: () {
                     food.forEach((key, value) {
-                      if (value['correct']) {
+                      if (checkboxes[food[key]['index']].value == true) {
                         context.read<FoodListEntryViewModel>().addFoodItemEntry(
                               food[key]['id'],
                               food[key]['storage'],
