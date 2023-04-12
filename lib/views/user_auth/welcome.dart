@@ -30,14 +30,14 @@ class WelcomePage extends StatelessWidget {
             ),
 
             //tagline
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             const Text(
               "Eat your groceries before they become gross-eries ;)",
               style: TextStyle(
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 24),
 
             //Get Started
             Padding(
@@ -63,7 +63,7 @@ class WelcomePage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
 
             //Log In
             Padding(

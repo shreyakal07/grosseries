@@ -62,7 +62,7 @@ class _FoodAddFormState extends State<FoodAddForm> {
         context.watch<UserViewModel>().userDatabase.values.toList();
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -98,9 +98,9 @@ class _FoodAddFormState extends State<FoodAddForm> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          // const SizedBox(
+          //   height: 0,
+          // ),
           Form(
             key: _formKey,
             child: Column(
@@ -114,9 +114,9 @@ class _FoodAddFormState extends State<FoodAddForm> {
                   onSaved: ((value) =>
                       setState(() => quantity = int.parse(value!))),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                // const SizedBox(
+                //   height: 8,
+                // ),
                 DropdownButtonFormField(
                   decoration:
                       const InputDecoration(labelText: "Choose item storage"),
@@ -145,7 +145,7 @@ class _FoodAddFormState extends State<FoodAddForm> {
                   onSaved: ((value) => setState(() => owner = value!)),
                 ),
                 const SizedBox(
-                  height: 26,
+                  height: 12,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,9 +167,9 @@ class _FoodAddFormState extends State<FoodAddForm> {
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 32,
-                ),
+                // const SizedBox(
+                //   height: 12,
+                // ),
                 ElevatedButton(
                   onPressed: () {
                     // Validate returns true if the form is valid, or false otherwise.

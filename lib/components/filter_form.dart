@@ -83,7 +83,7 @@ class _FilterFormState extends State<FilterForm> {
             }),
           ),
           const SizedBox(
-            height: 24,
+            height: 12,
           ),
           const Text(
             "Users",
@@ -122,7 +122,7 @@ class _FilterFormState extends State<FilterForm> {
             }),
           ),
           const SizedBox(
-            height: 24,
+            height: 12,
           ),
           Center(
             child: ElevatedButton(
