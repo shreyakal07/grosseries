@@ -42,7 +42,7 @@ class _FilterFormState extends State<FilterForm> {
             ),
           ),
           const SizedBox(
-            height: 48,
+            height: 24,
           ),
           const Text(
             "Filter Items",
@@ -53,7 +53,7 @@ class _FilterFormState extends State<FilterForm> {
             textAlign: TextAlign.left,
           ),
           const SizedBox(
-            height: 16,
+            height: 8,
           ),
           const Text(
             "Categories",
@@ -83,7 +83,7 @@ class _FilterFormState extends State<FilterForm> {
             }),
           ),
           const SizedBox(
-            height: 24,
+            height: 12,
           ),
           const Text(
             "Users",
@@ -122,7 +122,7 @@ class _FilterFormState extends State<FilterForm> {
             }),
           ),
           const SizedBox(
-            height: 24,
+            height: 12,
           ),
           Center(
             child: ElevatedButton(

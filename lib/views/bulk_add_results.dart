@@ -3,8 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grosseries/models/Response.dart';
+import 'package:grosseries/models/checkbox_state.dart';
 import 'package:grosseries/view_models/food_item_view_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
+import '../view_models/food_list_entry_view_model.dart';
+import '../view_models/user_view_model.dart';
 
 class BulkAddResults extends StatefulWidget {
   final String? imageBytes;
@@ -17,6 +23,10 @@ class BulkAddResults extends StatefulWidget {
 
 class _BulkAddResultsState extends State<BulkAddResults> {
   late Future<Response>? futureResponse;
+  Map food = {};
+  bool checkBoxValue = false;
+  final checkboxes = [];
+  final allCheckboxes = CheckboxState(label: "All Labeled Items", value: false);
 
   Future<Response> getLabel() async {
     Map json = {
@@ -28,10 +38,10 @@ class _BulkAddResultsState extends State<BulkAddResults> {
 
     final response = await http.post(
       Uri.parse(
-          'https://us-central1-aiplatform.googleapis.com/v1/projects/361247076963/locations/us-central1/endpoints/333490672797483008:predict'),
+          'https://us-central1-aiplatform.googleapis.com/v1/projects/844535666912/locations/us-central1/endpoints/7942709271332913152:predict'),
       headers: <String, String>{
         "Authorization":
-            'Bearer ya29.a0Ael9sCNncjCXbgWF6hFVnQ4ge9BfVDENfbYA40oquT7y0kd_Haw23MrK58jJq4XbEgVb-8cYCYxjsAlqblq3OVfxMH4n2Gb4OyPQoeUpTboLm2Th-Pk26drGqtR_ixbYjAKtcei4KlfgejlZF-3OeGRwhcsHqn8SaJ0aWERAjpbP0slkweVcdJsU63y4nVnNCYANnS5v9zr5VpLKpBCLIBQaDdMPD8IZRhcYzwaCgYKAZQSARESFQF4udJhB4Owxu0BBPhC6cJKh2p6SA0237',
+            'Bearer ya29.a0Ael9sCMfIDACAAaIw80HQCQY-0Wuz_f0euCUkh1gjr9qeSrxs-tUEnMR4ASleZjsaa-3QWLTIzkErEhTpsvfwlJ7z1demIbUv7fH-4Sbe-IlbMY4Gh8mnso3Wec5kugfe6gMM2T6Ye81wvwvni-hvbsIeml8j_IGJQ_ZgsuUNVT2O7NIsNcNh1D9bc-xO_0-9JRiOfIjul_vFbnJYXSP4DBf0msCE6zYGfnsg9QaCgYKAUgSARESFQF4udJhgvY7ckkCKClvOcTOrmNO_Q0238',
         'Content-Type': 'application/json',
       },
       body: jsonEncode(json),
@@ -52,6 +62,8 @@ class _BulkAddResultsState extends State<BulkAddResults> {
 
   @override
   Widget build(BuildContext context) {
+    User? currentUser = context.watch<UserViewModel>().currentUser;
+
     return Scaffold(
       backgroundColor: Colors.yellow[200],
       appBar: AppBar(
@@ -63,12 +75,58 @@ class _BulkAddResultsState extends State<BulkAddResults> {
       body: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(8.0),
-        child: (futureResponse == null) ? null : buildFutureBuilder(),
+        child: (futureResponse == null)
+            ? null
+            : buildFutureBuilder(context, currentUser, food),
       ),
     );
   }
 
-  FutureBuilder<Response> buildFutureBuilder() {
+  FutureBuilder<Response> buildFutureBuilder(context, currentUser, food) {
+    void toggleAllCheckboxes(bool? value) {
+      if (value == null) return;
+
+      setState(() {
+        allCheckboxes.value = value;
+        checkboxes.forEach((checkbox) => checkbox.value = value);
+      });
+    }
+
+    Widget buildCheckbox(CheckboxState checkbox) => CheckboxListTile(
+          activeColor: Colors.green,
+          controlAffinity: ListTileControlAffinity.leading,
+          value: checkbox.value,
+          title: Row(
+            children: [
+              Container(
+                  width: 100,
+                  margin: const EdgeInsets.only(right: 20),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                            FoodItemViewModel.getFoodItemByName(checkbox.label)!
+                                .image),
+                      ))),
+              Text(checkbox.label,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold))
+            ],
+          ),
+          onChanged: (value) => setState(() {
+            checkbox.value = value!;
+          }),
+        );
+
+    Widget buildAllCheckbox(CheckboxState checkbox) => CheckboxListTile(
+        activeColor: Colors.green,
+        controlAffinity: ListTileControlAffinity.leading,
+        value: checkbox.value,
+        title: Text(checkbox.label,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        onChanged: (value) => toggleAllCheckboxes(value));
+
     return FutureBuilder<Response>(
       future: futureResponse,
       builder: (context, snapshot) {
@@ -76,12 +134,29 @@ class _BulkAddResultsState extends State<BulkAddResults> {
 
         if (snapshot.hasData) {
           labels = snapshot.data!.displayNames;
-          // removes the 's' from the end of the label
+          // removes the 's'  or 'es' from the end of the label
           for (int i = 0; i < labels.length; i++) {
-            if (labels[i][labels[i].length - 1] == 's') {
+            if (labels[i].substring(labels[i].length - 2) == 'es') {
+              labels[i] = labels[i].substring(0, labels[i].length - 2);
+            } else if (labels[i][labels[i].length - 1] == 's') {
               labels[i] = labels[i].substring(0, labels[i].length - 1);
             }
+
+            if (FoodItemViewModel.getFoodItemByName(labels[i]) != null) {
+              food[labels[i]] = {
+                'index': i, // the index of the checkbox in checkboxes array
+                'id': FoodItemViewModel.getFoodItemByName(labels[i])!.id,
+                'quantity': 1,
+                'storage': "Fridge",
+                'owner': currentUser.email,
+                'datePurchased': DateTime.now(),
+                // 'checkbox': CheckboxState(value: false),
+              };
+              checkboxes.add(CheckboxState(label: labels[i], value: false));
+            }
           }
+          // debugPrint(food.toString());
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,65 +164,50 @@ class _BulkAddResultsState extends State<BulkAddResults> {
               Container(
                   margin: const EdgeInsets.only(left: 40, right: 40),
                   child: const Text(
-                      "Does this match with what you have in your photo?",
+                      "Select all ingredients that match with photo.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold))),
               const SizedBox(height: 25),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.all(15),
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(10),
-                              backgroundColor: Colors.green),
-                          child: const Text(
-                            "Yes",
-                            style: TextStyle(fontSize: 20),
-                          ))),
-                  Container(
-                      margin: const EdgeInsets.all(15),
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(10),
-                              backgroundColor: Colors.red),
-                          child: const Text(
-                            "No",
-                            style: TextStyle(fontSize: 20),
-                          ))),
-                ],
-              ),
-              const SizedBox(height: 25),
-              // needs to be updated if we have multiple labels
-              FoodItemViewModel.getFoodItemByName(labels[0]) != null
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                            width: 100,
-                            margin: const EdgeInsets.only(right: 20),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                      FoodItemViewModel.getFoodItemByName(
-                                              labels[0])!
-                                          .image),
-                                ))),
-                        Text(snapshot.data.toString(),
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold))
-                      ],
-                    )
-                  : Text(
-                      "${snapshot.data} has been detected but is not in our inventory."),
+              buildAllCheckbox(allCheckboxes),
+              Expanded(
+                  child: ListView.builder(
+                itemCount: labels.length,
+                itemBuilder: (context, index) => FoodItemViewModel
+                            .getFoodItemByName(labels[index]) !=
+                        null
+                    ? Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child:
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                            //   children: [
+                            buildCheckbox(checkboxes[index])
+                        // ],
+                        // )
+                        )
+                    : Text(
+                        "${labels[index]} has been detected but is not in our inventory."),
+              )),
+              ElevatedButton(
+                  onPressed: () {
+                    food.forEach((key, value) {
+                      if (checkboxes[food[key]['index']].value == true) {
+                        context.read<FoodListEntryViewModel>().addFoodItemEntry(
+                              food[key]['id'],
+                              food[key]['storage'],
+                              food[key]['quantity'],
+                              food[key]['owner'],
+                              food[key]['datePurchased'],
+                              currentUser?.notificationsEnabled,
+                              currentUser?.notificationDayAmount,
+                            );
+                        GoRouter.of(context).go("/");
+                      }
+                    });
+                  },
+                  child: const Text("Add Items")),
             ],
           );
         } else if (snapshot.hasError) {
@@ -178,10 +238,7 @@ class _BulkAddResultsState extends State<BulkAddResults> {
                     margin: const EdgeInsets.all(15),
                     child: ElevatedButton(
                         onPressed: () {
-                          // this does not work.
-                          // navigator does work but i don't want to do that becuase of the back button offsetting the title of the page
-                          // need to figure out how to do replace navigator with goRouter in bulk_add.dart
-                          GoRouter.of(context).go("/bulk_add");
+                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(10),

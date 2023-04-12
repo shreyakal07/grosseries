@@ -56,9 +56,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //tagline
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 48),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
                     "Eat your groceries before they become gross-eries ;)",
                     textAlign: TextAlign.center,
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 15),
 
                 // username textfield
                 Padding(
@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
 
                 //new sign in button
                 Padding(
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(color: Colors.red),
                       )
                     : const SizedBox(),
-                const SizedBox(height: 25),
+                const SizedBox(height: 12),
 
                 // not a member? register now
                 Row(

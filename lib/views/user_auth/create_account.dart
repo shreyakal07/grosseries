@@ -32,7 +32,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   var passwordValidator =
       ValidationBuilder(requiredMessage: "Password is required").build();
   var confirmPasswordValidator =
-      ValidationBuilder(requiredMessage: "Confirm Password is required").build();
+      ValidationBuilder(requiredMessage: "Confirm Password is required")
+          .build();
 
   List? isError;
 
@@ -45,16 +46,16 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 75),
+            const SizedBox(height: 5),
             // Create an Account
             Text(
               "Create an Account",
               style: GoogleFonts.bebasNeue(
                 fontWeight: FontWeight.bold,
-                fontSize: 52,
+                fontSize: 40,
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 5),
 
             Form(
                 key: _formKey,
@@ -153,18 +154,17 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             obscureText: _isHidden,
                             validator: passwordValidator,
                             decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Password",
-                              suffixIcon: InkWell(
-                                onTap: _togglePasswordView,
-                                child: Icon(
-                                  _isHidden
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.grey,
-                                ),
-                              )
-                            ),
+                                border: InputBorder.none,
+                                hintText: "Password",
+                                suffixIcon: InkWell(
+                                  onTap: _togglePasswordView,
+                                  child: Icon(
+                                    _isHidden
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.grey,
+                                  ),
+                                )),
                             onSaved: ((value) =>
                                 setState(() => passwordInput = value!)),
                           ),
@@ -317,7 +317,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           ],
         ))));
   }
-    void _togglePasswordView() {
+
+  void _togglePasswordView() {
     setState(() {
       _isHidden = !_isHidden;
     });

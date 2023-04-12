@@ -30,12 +30,12 @@ class FoodItemRow extends StatelessWidget {
 
     var foodCategories = context.watch<FoodCategoryViewModel>().foodCategories;
 
-    debugPrint("${foodItem!.name}${foodItem.daysToExpire}");
+    // debugPrint("${foodItem!.name}${foodItem.daysToExpire}");
 
-    debugPrint(context
-        .read<UserViewModel>()
-        .userDatabase[foodItems[index].owner]!
-        .firstName);
+    // debugPrint(context
+    //     .read<UserViewModel>()
+    //     .userDatabase[foodItems[index].owner]!
+    //     .firstName);
 
     Container buildRow(double topMargin, double bottomMargin) {
       return Container(
@@ -62,7 +62,7 @@ class FoodItemRow extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                "${foodItems[index].quantity.toString()}x ${foodItem.name}",
+                "${foodItems[index].quantity.toString()}x ${foodItem?.name}",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -72,7 +72,7 @@ class FoodItemRow extends StatelessWidget {
             ),
             UserBubble(
                 user:
-                    "${context.read<UserViewModel>().userDatabase[foodItems[index].owner]!.firstName} ${context.read<UserViewModel>().userDatabase[foodItems[index].owner]!.lastName}",
+                    "${context.read<UserViewModel>().userDatabase[foodItems[index].owner]?.firstName} ${context.read<UserViewModel>().userDatabase[foodItems[index].owner]?.lastName}",
                 borderSize: 4,
                 textSize: 15),
             Tag(
