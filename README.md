@@ -77,8 +77,11 @@ We added the feature to our app and connected the two together using a Vertex AP
 In future iterations of this project, we would like to add the ability for users to edit items retrieved from the model so they can change the quantity, location stored, etc. We would also like for users to have the ability to enter an expiration date if they need it and expand our database of items. Another possible feature we have considered adding is the ability for users to joina household so families, roommates, etc. can collectively view and edit what they have in their homes.  
 
 ## ❤️ Contributors
-* Jennifer Zheng
-* Crystal Li
-* Shreya Kalla
-* Shresta Kalla
 * Alexander Grattan
+* Shresta Kalla
+* Shreya Kalla
+* Crystal Li
+* Jennifer Zheng
+
+
+
