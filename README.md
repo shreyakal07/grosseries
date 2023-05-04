@@ -3,13 +3,6 @@
 # Grosseries
 ### Eat your groceries before they become gross-eries 😉🍎
 
-## 🚩 Objective
-Imagine this: Absolutely EXCITED to attempt at having one apple a day (to keep the doctor away), you buy apples at Giant Eagle and bring them home. Throughout the week, you’re invited out to eat by friends and coworkers. You become busy juggling your school work and your part-time job. You constantly have to head out early without eating breakfast.  
-  
-That bag of apples becomes **forgotten and untouched**. By the time you remember them, they’ve already **spoiled** and you have to throw them out. 😭 This left you sad and frustrated because you just wasted food and money.  
-  
-So we asked ourselves...How might we support busy, economical, and environmentally conscious people to help them track their groceries’ expirations, reduce food waste, save money, and be organized? 
-
 ## 👋 Meet Grosseries
 Grosseries is an app that acts as a personal food organizer. Users can easily keep track of food items in their kitchen by adding them into a list. Items can be added, searched, edited, deleted, sorted, and filtered. They are also tagged with different attributes/categories based on their expiration date, storage location, quantity, and user(s) who own them.
 
