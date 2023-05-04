@@ -16,7 +16,7 @@ We started off with user and product research and created 3 personas from what w
 ![image](https://user-images.githubusercontent.com/71287285/231613955-ad3210d9-3e67-4218-8b96-bead339e6569.png)
   
 ## ✏️ Wireframes
-We then created low fidelity wireframes in Figma, where we built out our idea and planned how the user experience and navigation would look like. A few of our wireframes are included below: 
+We then created low fidelity wireframes in Figma, and this is where we built out our idea and planned how the user experience and navigation would look like. A few of our wireframes are included below: 
   
 ![add item wireframe part 1](https://user-images.githubusercontent.com/71287285/231607582-aaa914dc-565d-45c3-a240-2a9d4f693266.png)
 ![add item wireframe part 2](https://user-images.githubusercontent.com/71287285/231607604-6231a1bc-cdbc-428b-8ecb-bf7709539b76.png)
